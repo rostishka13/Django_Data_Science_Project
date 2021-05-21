@@ -1,5 +1,5 @@
-{% load static %}
 <!doctype html>
+{% load static %}
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -12,9 +12,11 @@
     <!-- semantic UI -->
     <link rel="stylesheet" type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    {% block script%}
 
-
-    <title>Report - {% block title %}{% endblock title %}</title>
+    {% endblock script %}
+    <title>Report app - {% block title %}{% endblock title %}</title>
   </head>
   <body>
     {% include 'navbar.html' %}
