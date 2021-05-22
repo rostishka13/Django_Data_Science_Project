@@ -14,8 +14,12 @@ home
 
 </form>
 {% if sales_df %}
+<br>
     {{sales_df|safe}}
+<br>
+    {{position_df|safe}}
 {% else%}
     <h1>No data </h1>
 {% endif %}
+
 {% endblock content%}
