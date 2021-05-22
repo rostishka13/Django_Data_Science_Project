@@ -13,4 +13,9 @@ home
     <button type="submit" class="btn btn-primary mt-3">Search</button>
 
 </form>
+{% if sales_df %}
+    {{sales_df|safe}}
+{% else%}
+    <h1>No data </h1>
+{% endif %}
 {% endblock content%}
