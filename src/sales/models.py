@@ -1,4 +1,5 @@
 from django.db import models
+from django.shortcuts import reverse
 from products.models import Product
 from customers.models import Customers
 from profiles.models import Profile
@@ -40,6 +41,9 @@ class Sales(models.Model):
 
         return super().save(*args, **kwargs)
 
+    #this method allow us to navigate to particular page based on the app name and the name that we''e set in the path
+    def get_absolute_url(self):
+        return reverse('sales:detail', kwargs={'pk': self.pk})
     def __str__(self):
         return f"Sales for the amount of $: {self.total_price}"
     def get_positions(self):
