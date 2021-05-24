@@ -18,6 +18,11 @@ class Position(models.Model):
 
         return super().save(*args, **kwargs)
 
+    def get_sales_id(self):
+        #reverse relationship
+        sale_obj = self.sales_set.first()
+        return sale_obj.id
+
     def __str__(self):
         return f"id:{self.id}, product: {self.product.name}, quantity: {self.quantity}"
 
