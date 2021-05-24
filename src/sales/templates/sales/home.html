@@ -15,9 +15,14 @@ home
 </form>
 {% if sales_df %}
 <br>
+<h1>Sales df</h1>
     {{sales_df|safe}}
 <br>
+<h1>Position df</h1>
     {{position_df|safe}}
+<br>
+<h1>Merge df</h1>
+    {{merge_df|safe}}
 {% else%}
     <h1>No data </h1>
 {% endif %}

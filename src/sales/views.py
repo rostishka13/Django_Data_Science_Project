@@ -11,6 +11,7 @@ from .utils import get_customer_from_id,get_salesman_from_id
 def home_view(request):
     sales_df = None
     position_df = None
+    merge_df = None
     form = SalesSearchForm(request.POST or None)
     if request.method == 'POST':
         date_from = request.POST.get('date_from')
@@ -21,9 +22,10 @@ def home_view(request):
             sales_df = pd.DataFrame(sale_qs.values())
             sales_df['customer_id'] = sales_df['customer_id'].apply(get_customer_from_id)
             sales_df['salesman_id'] = sales_df['salesman_id'].apply(get_salesman_from_id)
-            sales_df.rename({'customer_id':'customer', 'salesman_id':'salesman'}, axis=1, inplace=True)
+            sales_df.rename({'customer_id':'customer', 'salesman_id':'salesman','id':'sales_id'}, axis=1, inplace=True)
             sales_df['created'] = sales_df['created'].apply(lambda x: x.strftime('%Y-%m-%d'))
             sales_df['updated'] = sales_df['updated'].apply(lambda x: x.strftime('%Y-%m-%d'))
+            # sales_df['sales_id'] = sales_df['id']
             positions_data = []
             for sale in sale_qs:
                 for pos in sale.get_positions():
@@ -37,8 +39,11 @@ def home_view(request):
                     positions_data.append(obj)
 
             position_df = pd.DataFrame(positions_data)
+            merge_df = pd.merge(sales_df, position_df, on='sales_id')
             sales_df = sales_df.to_html()
             position_df = position_df.to_html()
+            merge_df= merge_df.to_html()
+
         else:
             print('No data')
 
@@ -46,7 +51,8 @@ def home_view(request):
     context = {
         'sales_df':sales_df,
         'form': form,
-        'position_df': position_df
+        'position_df': position_df,
+        'merge_df': merge_df
     }
     return render(request, 'sales/home.html', context)
 
