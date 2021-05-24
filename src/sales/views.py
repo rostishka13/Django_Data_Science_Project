@@ -3,7 +3,7 @@ from django.views.generic import ListView, DetailView
 from .models import Sales
 from .forms import SalesSearchForm
 import pandas as pd
-from .utils import get_customer_from_id,get_salesman_from_id
+from .utils import get_customer_from_id,get_salesman_from_id, get_chart
 
 
 
@@ -11,7 +11,9 @@ from .utils import get_customer_from_id,get_salesman_from_id
 def home_view(request):
     sales_df = None
     position_df = None
+    df = None
     merge_df = None
+    chart = None
     form = SalesSearchForm(request.POST or None)
     if request.method == 'POST':
         date_from = request.POST.get('date_from')
@@ -40,9 +42,15 @@ def home_view(request):
 
             position_df = pd.DataFrame(positions_data)
             merge_df = pd.merge(sales_df, position_df, on='sales_id')
+            df = merge_df.groupby('transaction_id', as_index=False)['price'].agg('sum')
+
+            chart=get_chart(chart_type, df, labels=df['transaction_id'].values)
+
             sales_df = sales_df.to_html()
             position_df = position_df.to_html()
             merge_df= merge_df.to_html()
+            df = df.to_html()
+
 
         else:
             print('No data')
@@ -52,7 +60,9 @@ def home_view(request):
         'sales_df':sales_df,
         'form': form,
         'position_df': position_df,
-        'merge_df': merge_df
+        'merge_df': merge_df,
+        'df':df,
+        'chart':chart,
     }
     return render(request, 'sales/home.html', context)
 
