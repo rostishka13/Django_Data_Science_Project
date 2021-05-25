@@ -1,12 +1,37 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags%}
+{% load static %}
+
 {% block title %}
 home
 {% endblock title %}
+
+{% block script %}
+    <script src="{% static 'sales/js/home.js' %}" defer> </script>
+{% endblock script %}
+
+
 {% block content %}
+<!-- Modal -->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <hr>
-
 <form action="" method="post">
     {% csrf_token %}
     {{form|crispy}}
@@ -14,23 +39,24 @@ home
 
 </form>
 {% if sales_df %}
-<br>
-<h1>Sales df</h1>
-    {{sales_df|safe}}
-<br>
-<h1>Position df</h1>
-    {{position_df|safe}}
-<br>
-<h1>Merge df</h1>
-    {{merge_df|safe}}
-<h1>Grouped by dataframe</h1>
-    {{df|safe}}
-<br>
-<h1>Chart</h1>
-<img src="data:image/png;base64, {{chart|safe}}" alt="">
+    <br>
+    <h1>Sales df</h1>
+        {{sales_df|safe}}
+    <br>
+    <h1>Position df</h1>
+        {{position_df|safe}}
+    <br>
+    <h1>Merge df</h1>
+        {{merge_df|safe}}
+    <h1>Grouped by dataframe</h1>
+        {{df|safe}}
+    <br>
+    <h1>Chart</h1>
+    <img src="data:image/png;base64, {{chart|safe}}" id="img">
 {% else%}
     <h1>No data </h1>
-
 {% endif %}
 
+
+    <button class="btn btn-primary not-visible" id="report-btn" data-bs-toggle="modal" data-bs-target="#reportModal"> Add report </button>
 {% endblock content%}
