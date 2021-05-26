@@ -15,6 +15,7 @@ def home_view(request):
     df = None
     merge_df = None
     chart = None
+    no_data = None
     search_form = SalesSearchForm(request.POST or None)
     report_form = ReportForm()
 
@@ -59,7 +60,7 @@ def home_view(request):
 
 
         else:
-            print('No data')
+            no_data = 'No data is available in this this date range'
 
 
     context = {
@@ -70,6 +71,7 @@ def home_view(request):
         'df':df,
         'chart':chart,
         'report_form': report_form,
+        'no_data': no_data,
     }
     return render(request, 'sales/home.html', context)
 

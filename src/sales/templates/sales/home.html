@@ -34,6 +34,11 @@ home
 </div>
 
 <hr>
+{% if no_data %}
+<div class="alert alert-warning" role="alert">
+  {{no_data}}
+</div>
+{% endif %}
 <form action="" method="post">
     {% csrf_token %}
     {{search_form|crispy}}
@@ -55,10 +60,9 @@ home
     <br>
     <h1>Chart</h1>
     <img src="data:image/png;base64, {{chart|safe}}" id="img">
-{% else%}
-    <h1>No data </h1>
+
 {% endif %}
 
+<div><button class="btn btn-primary not-visible" id="report-btn" data-bs-toggle="modal" data-bs-target="#reportModal"> Add report </button></div>
 
-    <button class="btn btn-primary not-visible" id="report-btn" data-bs-toggle="modal" data-bs-target="#reportModal"> Add report </button>
 {% endblock content%}
