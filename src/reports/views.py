@@ -5,7 +5,7 @@ from .utils import get_report_image
 from .models import Report
 # Create your views here.
 from .forms import ReportForm
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 
 from django.conf import settings
 from django.http import HttpResponse
@@ -68,3 +68,9 @@ def render_pdf_view(request, pk):
     if pisa_status.err:
        return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
+
+class UploadTemplateView(TemplateView):
+    template_name = 'reports/from_file.html'
+
+def csv_upload_view(request):
+    return HttpResponse()
